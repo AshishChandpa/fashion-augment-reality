@@ -45,3 +45,4 @@ __pycache__/
 # Vanilla JS version (archived)
 # vanilla-version/
 
+.vercel
