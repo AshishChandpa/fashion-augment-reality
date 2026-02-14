@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="3D Model Viewer with AR capabilities">
+    <title>3D AR Viewer</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header>
+            <h1>3D AR Viewer</h1>
+            <div class="mode-toggle">
+                <button id="viewerModeBtn" class="mode-btn active">3D Viewer</button>
+                <button id="arModeBtn" class="mode-btn">AR Mode</button>
+            </div>
+        </header>
+
+        <!-- File Upload Section -->
+        <div id="uploadSection" class="upload-section">
+            <label for="fileInput" class="upload-label">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span>Upload .glb Model</span>
+            </label>
+            <input type="file" id="fileInput" accept=".glb,.gltf" style="display: none;">
+            <button id="loadSampleBtn" class="sample-btn">Load Sample Model</button>
+        </div>
+
+        <!-- 3D Viewer Container -->
+        <div id="viewerContainer" class="viewer-container" style="display: none;">
+            <canvas id="viewerCanvas"></canvas>
+            
+            <!-- Controls Panel -->
+            <div class="controls-panel">
+                <div class="control-group">
+                    <button id="resetBtn" class="control-btn" title="Reset View">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                        </svg>
+                    </button>
+                    <button id="fullscreenBtn" class="control-btn" title="Fullscreen">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Info Panel -->
+            <div class="info-panel">
+                <div id="modelInfo"></div>
+            </div>
+        </div>
+
+        <!-- AR Container -->
+        <div id="arContainer" class="ar-container" style="display: none;">
+            <canvas id="arCanvas"></canvas>
+            
+            <!-- AR Controls -->
+            <div class="ar-controls">
+                <button id="placeModelBtn" class="ar-btn">Place Model</button>
+                <button id="exitArBtn" class="ar-btn secondary">Exit AR</button>
+            </div>
+
+            <!-- AR Instructions -->
+            <div id="arInstructions" class="ar-instructions">
+                <p>Point your camera at a flat surface and tap "Place Model"</p>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading model...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="app.js"></script>
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => console.log('Service Worker registered:', reg))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>
+

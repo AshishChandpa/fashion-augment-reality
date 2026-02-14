@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate PWA Icons</title>
+</head>
+<body>
+    <h1>Icon Generator</h1>
+    <p>Icons will be generated below. Right-click to save them.</p>
+    <div id="icons"></div>
+
+    <script>
+        function createIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+
+            // Draw 3D cube icon
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = size / 30;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const cubeSize = size / 3;
+
+            // Front face
+            ctx.beginPath();
+            ctx.moveTo(centerX - cubeSize / 2, centerY);
+            ctx.lineTo(centerX + cubeSize / 2, centerY);
+            ctx.lineTo(centerX + cubeSize / 2, centerY + cubeSize);
+            ctx.lineTo(centerX - cubeSize / 2, centerY + cubeSize);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Top face
+            ctx.beginPath();
+            ctx.moveTo(centerX - cubeSize / 2, centerY);
+            ctx.lineTo(centerX, centerY - cubeSize / 2);
+            ctx.lineTo(centerX + cubeSize, centerY - cubeSize / 2);
+            ctx.lineTo(centerX + cubeSize / 2, centerY);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.fill();
+            ctx.stroke();
+
+            // Right face
+            ctx.beginPath();
+            ctx.moveTo(centerX + cubeSize / 2, centerY);
+            ctx.lineTo(centerX + cubeSize, centerY - cubeSize / 2);
+            ctx.lineTo(centerX + cubeSize, centerY + cubeSize / 2);
+            ctx.lineTo(centerX + cubeSize / 2, centerY + cubeSize);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.fill();
+            ctx.stroke();
+
+            return canvas;
+        }
+
+        // Generate icons
+        const sizes = [192, 512];
+        const container = document.getElementById('icons');
+
+        sizes.forEach(size => {
+            const canvas = createIcon(size);
+            const wrapper = document.createElement('div');
+            wrapper.style.margin = '20px';
+            
+            const title = document.createElement('h2');
+            title.textContent = `${size}x${size}`;
+            wrapper.appendChild(title);
+            
+            wrapper.appendChild(canvas);
+            
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = `icon-${size}.png`;
+            link.textContent = `Download icon-${size}.png`;
+            link.style.display = 'block';
+            link.style.marginTop = '10px';
+            wrapper.appendChild(link);
+            
+            container.appendChild(wrapper);
+        });
+    </script>
+</body>
+</html>
+
